@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Index{% endblock %}
+
+{% block content %}
+    <h1>Index page</h1>
+
+    <ul>
+        {% for person in people %}
+            <li>{{ person }}</li>
+        {% endfor %}
+    </ul>
+
+    <table border="2">
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>age</th>
+            <th>job</th>
+            <th>Delete</th>
+        </tr>
+
+        {% for person in people %}
+            <tr>
+                <th>{{ person.pid }}</th>
+                <td>{{ person.name }}</td>
+                <td>{{ person.age }}</td>
+                <td>{{ person.job }}</td>
+                <td>
+                    <button onclick="deletePerson('{{person.pid}}')">x</button>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <h3>New person</h3>
+
+    <form action="{{url_for('index')}}" method="POST">
+        <input type="text" name="name" placeholder="Enter name" required>
+        <br /><br />
+        <input type="number" name="age" placeholder="age">
+        <br /><br />
+        <input type="text" name="job" placeholder="Enter job">
+        <br /><br />
+        <input type="submit" value="Create">
+    </form>
+
+    <script>
+        function deletePerson(id){
+            
+            fetch('{{url_for("delete", pid=id)}}' + id, {
+                method: "DELETE"
+            }).then(res => {
+                window.location.reload()
+            })
+        }
+    </script>
+{% endblock %}
