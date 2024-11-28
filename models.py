@@ -1,13 +1,16 @@
+from flask_login import UserMixin
 from app import db
 
-print("Se crea un modelo")
-class Person(db.Model):
-    __tablename__ = "people"
+class User(db.Model, UserMixin):
+    __tablename__ = "users"
 
-    pid = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(40), nullable=False)
-    age = db.Column(db.Integer)
-    job = db.Column(db.String(40))
+    uid = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(40), nullable=False)
+    password = db.Column(db.Text, nullable=False)
+    role = db.Column(db.String(10))
+    description = db.Column(db.String(10))
 
     def __repr__(self):
-        return f"Person {{\n  pid = {self.pid}\n  name = {self.name}\n  age = {self.age}\n  job = {self.job}\n}}"
+        return f"<User: {self.username}, Role: {self.role}>"
+    
+    get_id = lambda self: self.uid
